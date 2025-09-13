@@ -1,12 +1,24 @@
-import { auth } from "@/auth"
+// middleware.ts
+import { auth } from "@/auth";
 
-export default auth((req) => {
-  if (!req.auth && req.nextUrl.pathname.startsWith("/dashboard")) {
-    const newUrl = new URL("/login", req.nextUrl.origin)
-    return Response.redirect(newUrl)
+export default auth(async (req) => {
+  const { auth: session, nextUrl } = req;
+
+  // not logged in → redirect to /login
+  if (!session && nextUrl.pathname.startsWith("/dashboard")) {
+    return Response.redirect(new URL("/login", nextUrl.origin));
   }
-})
+
+  // logged in but missing username → force setup
+  if (
+    session?.user &&
+    nextUrl.pathname.startsWith("/dashboard") &&
+    !session.user.username
+  ) {
+    return Response.redirect(new URL("/setup", nextUrl.origin));
+  }
+});
 
 export const config = {
-  matcher: ["/dashboard/:path*"], 
-}
+  matcher: ["/dashboard/:path*"],
+};
