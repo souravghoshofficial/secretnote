@@ -55,7 +55,7 @@ export default function UsernameForm({ email }: { email: string }) {
     }, 500);
 
     return () => clearTimeout(delay);
-  }, [username]);
+  }, [username, usernameRegex]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
