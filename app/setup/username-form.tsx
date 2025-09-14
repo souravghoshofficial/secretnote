@@ -70,8 +70,12 @@ export default function UsernameForm({ email }: { email: string }) {
     try {
       await axios.post("/api/setup", { email, username });
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Something went wrong");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || "Something went wrong");
+      } else {
+        setError("Something went wrong");
+      }
     } finally {
       setSubmitting(false);
     }
