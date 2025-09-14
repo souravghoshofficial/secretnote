@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "next-themes"
 
 
@@ -23,7 +24,8 @@ export default function RootLayout({
         >
            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                <Navbar />
-          {children}
+          <main>{children}</main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
