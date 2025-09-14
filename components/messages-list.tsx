@@ -2,7 +2,13 @@ import { sql } from "@/lib/db";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { Message } from "@/types/messages";
+
+
+type Message = {
+  id: string;
+  content: string;
+  created_at: string;
+};
 
 function formatIST(dateString: string) {
   const utcDate = new Date(dateString);

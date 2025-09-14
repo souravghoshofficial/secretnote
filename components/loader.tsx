@@ -1,11 +1,8 @@
 import React from 'react'
 import { Loader2 } from "lucide-react"
 
-interface LoaderProps {
-  className?: string;
-}
 
-const Loader: React.FC<LoaderProps> = ({ className }) => {
+const Loader = () => {
   return (
     <div className={`animate-spin`}>
         <Loader2 />
