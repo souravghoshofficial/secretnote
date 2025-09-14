@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Logo from "./logo"
 import { Sun, Moon } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
@@ -12,7 +13,12 @@ const NavbarClient = ({ session }: { session: Session | null }) => {
 
   return (
     <nav className="w-full fixed backdrop-blur-lg top-0 left-0 px-4 md:px-16 py-4 border-b flex items-center justify-between">
-      <div className="font-bold">SecretNote</div>
+      <Link href='/'>
+      <div className="flex items-center gap-2">
+        <Logo />
+        <span className="text-xl md:text-2xl">SecretNote</span>
+      </div>
+      </Link>
       <div className="flex items-center gap-4">
         <Button
           variant="outline"
