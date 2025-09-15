@@ -9,6 +9,12 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import axios from "axios";
 
+interface Message {
+  id: string;
+  content: string;
+  created_at: string;
+}
+
 interface DashboardClientProps {
   user: {
     id: string;
@@ -16,20 +22,18 @@ interface DashboardClientProps {
     name?: string;
     acceptingMessages: boolean;
   };
+  messages: Message[];
 }
 
-const DashboardClient = ({ user }: DashboardClientProps) => {
+const DashboardClient = ({ user, messages }: DashboardClientProps) => {
   const link = `${process.env.NEXT_PUBLIC_APP_URL}/u/${user.username}`;
-
   const [accepting, setAccepting] = useState(user.acceptingMessages);
 
   const handleToggle = async (checked: boolean) => {
     const prev = accepting;
     setAccepting(checked);
     try {
-      const res = await axios.post("/api/toggle-accepting", {
-        accepting: checked,
-      });
+      const res = await axios.post("/api/toggle-accepting", { accepting: checked });
       setAccepting(res.data.accepting);
       toast.success("Message acceptance status updated successfully");
     } catch (err) {
@@ -44,41 +48,22 @@ const DashboardClient = ({ user }: DashboardClientProps) => {
         Welcome, {user.name || user.username}
       </h1>
 
-      {/* Share link */}
       <div className="w-full max-w-lg flex flex-col gap-2 mb-8">
-        <Label htmlFor="link" className="text-sm font-medium">
-          Copy Your Unique Link
-        </Label>
+        <Label htmlFor="link" className="text-sm font-medium">Copy Your Unique Link</Label>
         <div className="flex items-center gap-2">
-          <Input
-            id="link"
-            type="text"
-            value={link}
-            readOnly
-            disabled
-            className="flex-1"
-          />
+          <Input id="link" type="text" value={link} readOnly disabled className="flex-1" />
           <CopyButton text={link} />
         </div>
       </div>
 
-      {/* Accept Messages toggle */}
       <div className="flex items-center gap-2 mb-6">
-        <Label htmlFor="accept" className="cursor-pointer">
-          Accept Messages
-        </Label>
-        <Switch
-          className="cursor-pointer"
-          id="accept"
-          checked={accepting}
-          onCheckedChange={handleToggle}
-        />
+        <Label htmlFor="accept" className="cursor-pointer">Accept Messages</Label>
+        <Switch id="accept" checked={accepting} onCheckedChange={handleToggle} />
       </div>
 
-      {/* Messages */}
       <div className="w-full max-w-4xl">
         <h2 className="text-xl font-semibold mb-4">Your Messages</h2>
-        <MessagesList userId={user.id!} />
+        <MessagesList messages={messages} />
       </div>
     </div>
   );
