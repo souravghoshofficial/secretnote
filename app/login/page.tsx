@@ -36,7 +36,7 @@ const Login = async () => {
               await signIn("google");
             }}
           >
-            <Button type="submit" variant="outline" className="w-full">
+            <Button type="submit" variant="outline" className="w-full cursor-pointer">
               <svg role="img" viewBox="0 0 24 24" className="w-4 h-4 mr-2">
                 <path
                   fill="currentColor"
@@ -54,7 +54,7 @@ const Login = async () => {
               await signIn("github");
             }}
           >
-            <Button type="submit" variant="outline" className="w-full">
+            <Button type="submit" variant="outline" className="w-full cursor-pointer">
               <svg viewBox="0 0 438.549 438.549" className="w-4 h-4 mr-2">
                 <path
                   fill="currentColor"

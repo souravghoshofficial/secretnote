@@ -18,11 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`w-full h-screen`}
         >
-           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
                <Navbar />
           <main>{children}</main>
           <Toaster />
