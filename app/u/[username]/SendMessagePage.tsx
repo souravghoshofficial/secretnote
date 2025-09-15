@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -45,17 +45,20 @@ export default function SendMessagePage({ username }: { username: string }) {
 
       toast.success("Message sent successfully");
       form.reset();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
 
-      // Check if server returned a message
-      if (err.response?.data?.error) {
-        toast.error(err.response.data.error);
+      if (axios.isAxiosError(err)) {
+        // err is typed as AxiosError
+        toast.error(
+          err.response?.data?.error ||
+            "Failed to send message. Please try again."
+        );
+      } else if (err instanceof Error) {
+        toast.error(err.message);
       } else {
         toast.error("Failed to send message. Please try again.");
       }
-    } finally {
-      setSubmitting(false);
     }
   };
 
