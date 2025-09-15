@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     // find the user by username
     const users = await sql`
-      SELECT id FROM users WHERE username = ${username}
+      SELECT id, accepting_messages FROM users WHERE username = ${username}
     `;
 
     if (users.length === 0) {
@@ -24,12 +24,19 @@ export async function POST(req: Request) {
       );
     }
 
-    const userId = users[0].id;
+    const user = users[0];
+
+    if (!user.accepting_messages) {
+      return NextResponse.json(
+        { error: "This user is not accepting messages." },
+        { status: 403 }
+      );
+    }
 
     // insert message
     await sql`
       INSERT INTO messages (user_id, content)
-      VALUES (${userId}, ${content})
+      VALUES (${user.id}, ${content})
     `;
 
     return NextResponse.json({ success: true });

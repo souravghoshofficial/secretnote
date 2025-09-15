@@ -38,16 +38,22 @@ export default function SendMessagePage({ username }: { username: string }) {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setSubmitting(true);
     try {
-      await axios.post("/api/messages", {
+      const res = await axios.post("/api/messages", {
         username,
         content: data.message,
       });
 
       toast.success("Message sent successfully");
       form.reset();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      toast.error("Failed to send message. Please try again.");
+
+      // Check if server returned a message
+      if (err.response?.data?.error) {
+        toast.error(err.response.data.error);
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
