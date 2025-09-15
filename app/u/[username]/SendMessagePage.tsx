@@ -59,6 +59,8 @@ export default function SendMessagePage({ username }: { username: string }) {
       } else {
         toast.error("Failed to send message. Please try again.");
       }
+    }finally{
+      setSubmitting(false);
     }
   };
 
