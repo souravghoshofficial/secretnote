@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
 import {
@@ -43,22 +43,28 @@ function formatIST(dateString: string) {
 
 export default function MessagesList({ messages, onMessageDeleted }: MessagesListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
-    setLoading(true);
+    setLoadingId(id);
     try {
       const res = await axios.delete(`/api/messages/${id}/delete`);
       if (res.data.success) {
         toast.success("Message deleted successfully");
         if (onMessageDeleted) onMessageDeleted(id);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      toast.error(err.response?.data?.error || "Failed to delete message");
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.error || "Failed to delete message");
+      } else if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to delete message");
+      }
     } finally {
       setDeletingId(null);
-      setLoading(false);
+      setLoadingId(null);
     }
   };
 
@@ -66,7 +72,7 @@ export default function MessagesList({ messages, onMessageDeleted }: MessagesLis
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {messages.map(msg => (
+      {messages.map((msg) => (
         <Card key={msg.id} className="shadow-sm">
           <CardContent className="pt-4">
             <p className="text-sm md:text-base">{msg.content}</p>
@@ -76,13 +82,14 @@ export default function MessagesList({ messages, onMessageDeleted }: MessagesLis
 
             <AlertDialog
               open={deletingId === msg.id}
-              onOpenChange={open => setDeletingId(open ? msg.id : null)}
+              onOpenChange={(open: boolean) => setDeletingId(open ? msg.id : null)}
             >
               <AlertDialogTrigger asChild>
                 <Button variant="destructive" size="icon">
                   <X className="w-4 h-4" />
                 </Button>
               </AlertDialogTrigger>
+
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Message</AlertDialogTitle>
@@ -94,10 +101,10 @@ export default function MessagesList({ messages, onMessageDeleted }: MessagesLis
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => handleDelete(msg.id)}
-                    disabled={loading}
+                    disabled={loadingId === msg.id}
                     className="bg-red-600 hover:bg-red-700"
                   >
-                    {loading ? "Deleting..." : "Delete"}
+                    {loadingId === msg.id ? "Deleting..." : "Delete"}
                   </AlertDialogAction>
                 </div>
               </AlertDialogContent>
