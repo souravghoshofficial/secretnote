@@ -1,21 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { sql } from "@/lib/db";
 import { auth } from "@/auth";
-import type { NextRequest } from "next/server";
 
-// The context parameter type for dynamic routes
-interface Params {
-  params: { id: string };
-}
-
-export async function DELETE(req: NextRequest, context: Params) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const session = await auth();
 
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = context.params;
+  const { id } = params;
 
   // Check if the message belongs to the logged-in user
   const messages = await sql`
