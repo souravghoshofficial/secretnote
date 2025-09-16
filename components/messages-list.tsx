@@ -95,7 +95,7 @@ export default function MessagesList({ messages, onMessageDeleted }: MessagesLis
                     Are you sure you want to delete this message? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
-                <div className="flex justify-end gap-2 mt-4">
+                <div className="flex justify-end gap-2 mt-1">
                   <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => handleDelete(msg.id)}

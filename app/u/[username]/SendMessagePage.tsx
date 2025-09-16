@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -59,7 +60,7 @@ export default function SendMessagePage({ username }: { username: string }) {
       } else {
         toast.error("Failed to send message. Please try again.");
       }
-    }finally{
+    } finally {
       setSubmitting(false);
     }
   };
@@ -68,11 +69,14 @@ export default function SendMessagePage({ username }: { username: string }) {
   const messageValue = form.watch("message");
 
   return (
-    <div className="w-full h-screen flex justify-center">
+    <div className="w-full h-screen flex flex-col items-center px-4 relative">
+      <h2 className="mt-36 text-2xl md:text-3xl font-semibold w-[95%] max-w-3xl text-left">
+        Send Anonymous Message
+      </h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[95%] max-w-3xl space-y-6 mt-40"
+          className="w-[95%] max-w-3xl space-y-4 mt-8"
         >
           <FormField
             control={form.control}
@@ -111,6 +115,13 @@ export default function SendMessagePage({ username }: { username: string }) {
           </div>
         </form>
       </Form>
+      <div className="w-[95%] max-w-3xl absolute bottom-16 flex flex-col justify-center">
+        <p className="text-center">Want to get your own anonymous message link?</p>
+
+        <Link href="/login" className="mt-4 mx-auto">
+          <Button className="cursor-pointer">Create Your Profile</Button>
+        </Link>
+      </div>
     </div>
   );
 }
