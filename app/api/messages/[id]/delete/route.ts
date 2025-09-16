@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
 
@@ -12,15 +12,15 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await context.params; // ✅ await since it's a Promise
 
   // Check if the message belongs to the logged-in user
-  const messages = await sql`
+  const result = await sql`
     SELECT id FROM messages
     WHERE id = ${id} AND user_id = ${session.user.id}
   `;
 
-  if (messages.length === 0) {
+  if (result.length === 0) {
     return NextResponse.json(
       { error: "Message not found or unauthorized" },
       { status: 404 }
