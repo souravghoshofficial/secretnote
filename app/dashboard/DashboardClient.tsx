@@ -68,7 +68,7 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
   };
 
   return (
-    <div className="w-full h-screen overflow-y-scroll flex flex-col items-center pt-30 md:pt-24 pb-16 px-4 bg-background text-foreground hide-scrollbar">
+    <div className="w-full h-screen overflow-y-scroll flex flex-col items-center pt-30 md:pt-24 pb-16 px-2 bg-background text-foreground hide-scrollbar">
       <div className="w-[95%] max-w-5xl">
         <h1 className="w-full max-w-5xl text-3xl md:text-4xl font-bold mb-6 text-left">
           Welcome, {user.name || user.username}

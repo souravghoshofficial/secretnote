@@ -69,54 +69,58 @@ export default function SendMessagePage({ username }: { username: string }) {
   const messageValue = form.watch("message");
 
   return (
-    <div className="w-full h-screen flex flex-col items-center px-4 relative">
-      <h2 className="mt-36 text-2xl md:text-3xl font-semibold w-[95%] max-w-3xl text-left">
-        Send Anonymous Message
-      </h2>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[95%] max-w-3xl space-y-4 mt-8"
-        >
-          <FormField
-            control={form.control}
-            name="message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Send Anonymous Message to @{username}</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Write your anonymous message..."
-                    className="resize-none h-24 mt-1"
-                    disabled={submitting}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="w-full flex justify-end">
-            <Button
-              type="submit"
-              className="cursor-pointer disabled:cursor-not-allowed"
-              disabled={submitting || !messageValue?.trim()}
-            >
-              {submitting ? (
-                <>
-                  <Loader />
-                  Sending...
-                </>
-              ) : (
-                "Send Message"
+    <div className="w-full h-screen flex flex-col items-center justify-between py-16 px-2">
+      <div className="w-[95%] max-w-3xl mt-16">
+        <h2 className="text-2xl md:text-3xl font-semibold w-full text-left">
+          Send Anonymous Message
+        </h2>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4 mt-8"
+          >
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Send Anonymous Message to @{username}</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Write your anonymous message..."
+                      className="resize-none h-24 mt-1"
+                      disabled={submitting}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </Button>
-          </div>
-        </form>
-      </Form>
-      <div className="w-[95%] max-w-3xl absolute bottom-16 flex flex-col justify-center">
-        <p className="text-center">Want to get your own anonymous message link?</p>
+            />
+
+            <div className="w-full flex justify-end">
+              <Button
+                type="submit"
+                className="cursor-pointer disabled:cursor-not-allowed"
+                disabled={submitting || !messageValue?.trim()}
+              >
+                {submitting ? (
+                  <>
+                    <Loader />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+      <div className="flex flex-col justify-center">
+        <p className="text-center">
+          Want to get your own anonymous message link?
+        </p>
 
         <Link href="/login" className="mt-4 mx-auto">
           <Button className="cursor-pointer">Create Your Profile</Button>
