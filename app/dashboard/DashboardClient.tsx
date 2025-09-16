@@ -86,7 +86,7 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
               value={link}
               readOnly
               disabled
-              className="flex-1 px-4 py-2 rounded-md bg-gray-50 dark:bg-neutral-900"
+              className="flex-1 px-2 md:px-4 py-2 rounded-md bg-gray-50 dark:bg-neutral-900"
             />
             <CopyButton text={link} />
           </div>
