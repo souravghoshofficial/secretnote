@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { auth } from "@/auth"; // to check session
 
+// POST: Send a message to a user
 export async function POST(req: Request) {
   try {
     const { username, content } = await req.json();
@@ -18,10 +20,7 @@ export async function POST(req: Request) {
     `;
 
     if (users.length === 0) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const user = users[0];
@@ -41,7 +40,32 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Error in /api/messages:", err);
+    console.error("Error in /api/messages POST:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+// GET: Fetch all messages for the logged-in user
+export async function GET() {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const messages = await sql`
+      SELECT id, content, created_at
+      FROM messages
+      WHERE user_id = ${session.user.id}
+      ORDER BY created_at DESC
+    `;
+
+    return NextResponse.json(messages);
+  } catch (err) {
+    console.error("Error in /api/messages GET:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

@@ -1,4 +1,3 @@
-// app/dashboard/page.tsx
 import { auth } from "@/auth";
 import { sql } from "@/lib/db";
 import DashboardClient from "./DashboardClient";

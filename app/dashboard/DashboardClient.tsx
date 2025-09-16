@@ -6,8 +6,10 @@ import MessagesList from "@/components/messages-list";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
+import { RefreshCw } from "lucide-react";
 
 interface Message {
   id: string;
@@ -30,6 +32,7 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
 
   const [accepting, setAccepting] = useState(user.acceptingMessages);
   const [messageList, setMessageList] = useState<Message[]>(messages);
+  const [loading, setLoading] = useState(false);
 
   const handleToggle = async (checked: boolean) => {
     const prev = accepting;
@@ -46,6 +49,19 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
 
   const handleMessageDeleted = (id: string) => {
     setMessageList((prev) => prev.filter((msg) => msg.id !== id));
+  };
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get<Message[]>("/api/messages");
+      setMessageList(res.data);
+      toast.success("Messages refreshed");
+    } catch (err) {
+      toast.error("Failed to refresh messages");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -69,9 +85,19 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
         <Switch id="accept" checked={accepting} onCheckedChange={handleToggle} />
       </div>
 
-      {/* Messages */}
+      {/* Messages with Refresh */}
       <div className="w-full max-w-4xl">
-        <h2 className="text-xl font-semibold mb-4">Your Messages</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold">Your Messages</h2>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleRefresh}
+            disabled={loading}
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </Button>
+        </div>
         <MessagesList messages={messageList} onMessageDeleted={handleMessageDeleted} />
       </div>
     </div>
