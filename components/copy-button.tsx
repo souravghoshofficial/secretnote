@@ -14,8 +14,8 @@ export default function CopyButton({ text }: { text: string }) {
   };
 
   return (
-    <Button onClick={handleCopy} variant="outline" size="sm" className="flex items-center">
-      {copied ? <Check className="w-4 h-4 mr-1" /> : <Copy className="w-4 h-4 mr-1" />}
+    <Button onClick={handleCopy}  className="flex items-center cursor-pointer">
+      {copied ? <Check className="w-6 h-6 mr-0.5" /> : <Copy className="w-6 h-6 mr-0.5" />}
       {copied ? "Copied!" : "Copy"}
     </Button>
   );

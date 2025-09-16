@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -71,44 +71,45 @@ export default function MessagesList({ messages, onMessageDeleted }: MessagesLis
   if (messages.length === 0) return <p className="text-muted-foreground">No messages yet.</p>;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-6 sm:grid-cols-2">
       {messages.map((msg) => (
-        <Card key={msg.id} className="shadow-sm">
-          <CardContent className="pt-4">
-            <p className="text-sm md:text-base">{msg.content}</p>
-          </CardContent>
-          <CardFooter className="flex justify-between text-xs text-muted-foreground">
-            <span>{formatIST(msg.created_at)}</span>
-
+        <Card key={msg.id} className="shadow-none rounded-md">
+         <CardHeader className="flex justify-between">
+          <CardTitle className="text-xl md:text-2xl font-semibold">
+            {msg.content}
+          </CardTitle>
             <AlertDialog
               open={deletingId === msg.id}
               onOpenChange={(open: boolean) => setDeletingId(open ? msg.id : null)}
             >
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="icon">
+                <Button className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" size="icon">
                   <X className="w-4 h-4" />
                 </Button>
               </AlertDialogTrigger>
 
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Message</AlertDialogTitle>
-                  <AlertDialogDescription>
+                  <AlertDialogTitle className="text-left">Delete Message</AlertDialogTitle>
+                  <AlertDialogDescription className="text-left">
                     Are you sure you want to delete this message? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="flex justify-end gap-2 mt-4">
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => handleDelete(msg.id)}
                     disabled={loadingId === msg.id}
-                    className="bg-red-600 hover:bg-red-700"
+                    className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                   >
                     {loadingId === msg.id ? "Deleting..." : "Delete"}
                   </AlertDialogAction>
                 </div>
               </AlertDialogContent>
             </AlertDialog>
+         </CardHeader>
+          <CardFooter className="text-sm text-muted-foreground">
+            <span>{formatIST(msg.created_at)}</span>
           </CardFooter>
         </Card>
       ))}

@@ -12,14 +12,14 @@ const NavbarClient = ({ session }: { session: Session | null }) => {
   const { theme, setTheme } = useTheme()
 
   return (
-    <nav className="w-full fixed backdrop-blur-lg top-0 left-0 px-4 md:px-16 py-4 border-b flex items-center justify-between">
+    <nav className="w-full fixed backdrop-blur-xl top-0 left-0 px-4 md:px-16 py-4 border-b flex items-center justify-between z-20">
       <Link href='/'>
       <div className="flex items-center gap-2">
         <Logo />
         <span className="text-xl md:text-2xl">SecretNote</span>
       </div>
       </Link>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         <Button
           variant="outline"
           className="cursor-pointer"
