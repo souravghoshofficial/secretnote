@@ -27,7 +27,9 @@ interface DashboardClientProps {
 
 const DashboardClient = ({ user, messages }: DashboardClientProps) => {
   const link = `${process.env.NEXT_PUBLIC_APP_URL}/u/${user.username}`;
+
   const [accepting, setAccepting] = useState(user.acceptingMessages);
+  const [messageList, setMessageList] = useState<Message[]>(messages);
 
   const handleToggle = async (checked: boolean) => {
     const prev = accepting;
@@ -42,12 +44,17 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
     }
   };
 
+  const handleMessageDeleted = (id: string) => {
+    setMessageList((prev) => prev.filter((msg) => msg.id !== id));
+  };
+
   return (
     <div className="w-full min-h-screen flex flex-col items-center pt-20 pb-10 px-4 bg-background text-foreground">
       <h1 className="text-2xl md:text-3xl font-bold mb-6">
         Welcome, {user.name || user.username}
       </h1>
 
+      {/* Share link */}
       <div className="w-full max-w-lg flex flex-col gap-2 mb-8">
         <Label htmlFor="link" className="text-sm font-medium">Copy Your Unique Link</Label>
         <div className="flex items-center gap-2">
@@ -56,14 +63,16 @@ const DashboardClient = ({ user, messages }: DashboardClientProps) => {
         </div>
       </div>
 
+      {/* Accepting toggle */}
       <div className="flex items-center gap-2 mb-6">
         <Label htmlFor="accept" className="cursor-pointer">Accept Messages</Label>
         <Switch id="accept" checked={accepting} onCheckedChange={handleToggle} />
       </div>
 
+      {/* Messages */}
       <div className="w-full max-w-4xl">
         <h2 className="text-xl font-semibold mb-4">Your Messages</h2>
-        <MessagesList messages={messages} />
+        <MessagesList messages={messageList} onMessageDeleted={handleMessageDeleted} />
       </div>
     </div>
   );
