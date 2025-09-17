@@ -43,7 +43,7 @@ export default function LandingPage() {
               size="lg"
               className="bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600"
             >
-              Create Your Profile
+              Login
             </Button>
           </Link>
           <a href="#how-it-works">
@@ -125,7 +125,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-8 bg-gray-50 text-center text-sm text-gray-600 border-t border-gray-200 dark:bg-black dark:text-zinc-500 dark:border-zinc-800">
         <p>© {new Date().getFullYear()} SecretNote. All rights reserved.</p>
-        <div className="mt-3 flex justify-center gap-6">
+        {/* <div className="mt-3 flex justify-center gap-6">
           <Link href="/about" className="hover:text-purple-600 dark:hover:text-purple-400">
             About
           </Link>
@@ -138,7 +138,7 @@ export default function LandingPage() {
           <Link href="/contact" className="hover:text-purple-600 dark:hover:text-purple-400">
             Contact
           </Link>
-        </div>
+        </div> */}
       </footer>
     </div>
   );
