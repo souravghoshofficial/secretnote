@@ -39,7 +39,7 @@ export default function SendMessagePage({ username }: { username: string }) {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setSubmitting(true);
     try {
-      const res = await axios.post("/api/messages", {
+       await axios.post("/api/messages", {
         username,
         content: data.message,
       });
@@ -69,7 +69,7 @@ export default function SendMessagePage({ username }: { username: string }) {
   const messageValue = form.watch("message");
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-between py-16 px-2">
+    <div className="w-full h-screen flex flex-col items-center justify-between pt-16 pb-20 px-2">
       <div className="w-[95%] max-w-3xl mt-16">
         <h2 className="text-2xl md:text-3xl font-semibold w-full text-left">
           Send Anonymous Message
@@ -123,7 +123,7 @@ export default function SendMessagePage({ username }: { username: string }) {
         </p>
 
         <Link href="/login" className="mt-4 mx-auto">
-          <Button className="cursor-pointer">Create Your Profile</Button>
+          <Button className="cursor-pointer">Create Your Profile Now</Button>
         </Link>
       </div>
     </div>

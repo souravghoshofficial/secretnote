@@ -14,49 +14,58 @@ import {
 
 export default function LandingPage() {
   return (
-    <div className="w-full min-h-screen flex flex-col bg-white text-black dark:bg-black dark:text-white">
+    <div className="w-full h-screen flex flex-col bg-white text-black dark:bg-black dark:text-white overflow-y-scroll hide-scrollbar ">
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-24 md:py-36 bg-gradient-to-b from-gray-50 to-white dark:from-zinc-900 dark:to-black">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl md:text-6xl font-extrabold max-w-3xl"
-        >
-          Send & Receive{" "}
-          <span className="text-purple-600 dark:text-purple-400">Anonymous</span>{" "}
-          Messages
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mt-6 text-lg md:text-xl max-w-2xl text-gray-600 dark:text-zinc-300"
-        >
-          Honest feedback, secret wishes, or fun surprises — all safe, private,
-          and anonymous.
-        </motion.p>
+     <section className="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-24 md:py-36 bg-gradient-to-b from-gray-50 to-white dark:from-zinc-900 dark:to-black">
+  {/* Left Content */}
+  <div className="text-center md:text-left md:w-1/2">
+    <motion.h1
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="text-4xl md:text-6xl font-extrabold"
+    >
+      Send & Receive <span className="text-purple-600 dark:text-purple-400">Anonymous</span> Messages
+    </motion.h1>
+    <motion.p
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="mt-6 text-lg md:text-xl text-gray-600 dark:text-zinc-300"
+    >
+      Honest feedback, secret wishes, or fun surprises — all safe, private,
+      and anonymous.
+    </motion.p>
 
-        <div className="flex gap-4 mt-10">
-          <Link href="/login">
-            <Button
-              size="lg"
-              className="bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600"
-            >
-              Login
-            </Button>
-          </Link>
-          <a href="#how-it-works">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-gray-300 text-black hover:bg-gray-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-900"
-            >
-              Learn More
-            </Button>
-          </a>
-        </div>
-      </section>
+    <div className="flex gap-4 mt-10 justify-center md:justify-start">
+      <Link href="/login">
+        <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white cursor-pointer">
+          Create Your Profile
+        </Button>
+      </Link>
+      <a href="#how-it-works">
+        <Button size="lg" variant="outline" className="border-gray-300 dark:border-zinc-700 cursor-pointer">
+          Learn More
+        </Button>
+      </a>
+    </div>
+  </div>
+
+  {/* Right Illustration */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.8 }}
+    className="mt-12 md:mt-0 md:w-1/2 flex justify-center"
+  >
+    <img
+      src="/hero-image.png"
+      alt="SecretNote Illustration"
+      className="w-full max-w-md rounded-2xl"
+    />
+  </motion.div>
+</section>
+
 
       {/* How it works */}
       <section
@@ -115,7 +124,7 @@ export default function LandingPage() {
         <Link href="/login">
           <Button
             size="lg"
-            className="bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600"
+            className="bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600 cursor-pointer"
           >
             Create Your Profile Now
           </Button>

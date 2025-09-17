@@ -1,7 +1,7 @@
 import React from 'react'
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
-import LandingPage from './Landing';
+import LandingPage from './LandingPage';
 
 const Home = async() => {
   const session = await auth();
