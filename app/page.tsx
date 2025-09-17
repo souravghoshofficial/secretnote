@@ -1,6 +1,7 @@
 import React from 'react'
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
+import LandingPage from './Landing';
 
 const Home = async() => {
   const session = await auth();
@@ -8,7 +9,7 @@ const Home = async() => {
      redirect("/dashboard")
   }
   return (
-    <div className='w-full min-h-screen flex items-center justify-center'>Home</div>
+   <LandingPage />
   )
 }
 
