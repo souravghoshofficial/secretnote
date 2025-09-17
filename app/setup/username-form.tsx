@@ -7,7 +7,6 @@ import { CircleCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import Loader from "@/components/loader";
 
 import {
@@ -18,6 +17,14 @@ import {
   CardContent,
 } from "@/components/ui/card";
 
+import { z } from "zod";
+
+const usernameSchema = z
+  .string()
+  .min(3, "Username must be at least 3 characters")
+  .max(15, "Username must not exceed 15 characters")
+  .regex(/^[a-z0-9]+$/, "Only lowercase letters and numbers allowed");
+
 export default function UsernameForm({ email }: { email: string }) {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
@@ -25,10 +32,7 @@ export default function UsernameForm({ email }: { email: string }) {
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
-  // regex: only lowercase a-z and 0-9, 3–15 characters
-  const usernameRegex = /^[a-z0-9]{3,15}$/;
 
-  // Debounced live check
   useEffect(() => {
     if (!username) {
       setAvailable(null);
@@ -36,9 +40,10 @@ export default function UsernameForm({ email }: { email: string }) {
       return;
     }
 
-    if (!usernameRegex.test(username)) {
+    const result = usernameSchema.safeParse(username);
+    if (!result.success) {
       setAvailable(false);
-      setError("Only lowercase letters and numbers allowed (3–15 chars).");
+      setError(result.error.issues[0].message);
       return;
     }
 
@@ -57,16 +62,17 @@ export default function UsernameForm({ email }: { email: string }) {
     return () => clearTimeout(delay);
   }, [username]);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!available || !usernameRegex.test(username)) {
-      setError("Invalid or unavailable username");
+    const result = usernameSchema.safeParse(username);
+    if (!result.success || !available) {
+      setError(result.success ? "Username unavailable" : result.error.issues[0].message);
       return;
     }
 
     setSubmitting(true);
-
     try {
       await axios.post("/api/setup", { email, username });
       router.push("/dashboard");
@@ -93,7 +99,7 @@ export default function UsernameForm({ email }: { email: string }) {
               type="text"
               placeholder="Choose a username"
               value={username}
-              onChange={(e) => setUsername(e.target.value.trim())}
+              onChange={(e) => setUsername(e.target.value.trim().toLowerCase())}
               required
             />
 
@@ -108,7 +114,8 @@ export default function UsernameForm({ email }: { email: string }) {
           </form>
         </CardContent>
         <CardFooter>
-          <Button
+          <div className="w-full flex justify-end">
+            <Button
             type="submit"
             disabled={!available || submitting}
             className="cursor-pointer"
@@ -117,6 +124,7 @@ export default function UsernameForm({ email }: { email: string }) {
             {submitting && <Loader />}
             {submitting ? "Saving..." : "Save Username"}
           </Button>
+          </div>
         </CardFooter>
       </Card>
     </div>
