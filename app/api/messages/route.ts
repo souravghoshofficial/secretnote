@@ -3,9 +3,27 @@ import { sql } from "@/lib/db";
 import { auth } from "@/auth";
 import { encryptMessage, decryptMessage } from "@/lib/crypto";
 
+
+type MessageRow = {
+  id: string;
+  encrypted_text: string;
+  iv: string;
+  auth_tag: string;
+  created_at: string;
+};
+
+
+type Message = {
+  id: string;
+  content: string;
+  created_at: string;
+};
+
+
 export async function POST(req: Request) {
   try {
-    const { username, content } = await req.json();
+    const { username, content }: { username?: string; content?: string } = await req.json();
+
     if (!username || !content) {
       return NextResponse.json({ error: "Username and content required" }, { status: 400 });
     }
@@ -13,9 +31,13 @@ export async function POST(req: Request) {
     const users = await sql`
       SELECT id, accepting_messages FROM users WHERE username = ${username}
     `;
-    if (users.length === 0) return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+    if (users.length === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     const user = users[0];
+
     if (!user.accepting_messages) {
       return NextResponse.json({ error: "This user is not accepting messages." }, { status: 403 });
     }
@@ -38,18 +60,27 @@ export async function POST(req: Request) {
 export async function GET() {
   try {
     const session = await auth();
+
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const rows = await sql`
+    const rawRows = await sql`
       SELECT id, encrypted_text, iv, auth_tag, created_at
       FROM messages
       WHERE user_id = ${session.user.id}
       ORDER BY created_at DESC
     `;
+    const rows: MessageRow[] = rawRows.map((row: Record<string, any>) => ({
+      id: row.id,
+      encrypted_text: row.encrypted_text,
+      iv: row.iv,
+      auth_tag: row.auth_tag,
+      created_at: row.created_at,
+    }));
 
-    const messages = rows.map((m: any) => ({
+    // Decrypt messages
+    const messages: Message[] = rows.map((m) => ({
       id: m.id,
       content: decryptMessage(m.encrypted_text, m.iv, m.auth_tag),
       created_at: m.created_at,

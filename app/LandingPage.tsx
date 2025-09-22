@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   UserPlus,
@@ -16,56 +17,67 @@ export default function LandingPage() {
   return (
     <div className="w-full h-screen flex flex-col bg-white text-black dark:bg-black dark:text-white overflow-y-scroll hide-scrollbar ">
       {/* Hero Section */}
-     <section className="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-24 md:py-36 bg-gradient-to-b from-gray-50 to-white dark:from-zinc-900 dark:to-black">
-  {/* Left Content */}
-  <div className="text-center md:text-left md:w-1/2">
-    <motion.h1
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="text-4xl md:text-6xl font-extrabold"
-    >
-      Send & Receive <span className="text-purple-600 dark:text-purple-400">Anonymous</span> Messages
-    </motion.h1>
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="mt-6 text-lg md:text-xl text-gray-600 dark:text-zinc-300"
-    >
-      Honest feedback, secret wishes, or fun surprises — all safe, private,
-      and anonymous.
-    </motion.p>
+      <section className="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-24 md:py-36 bg-gradient-to-b from-gray-50 to-white dark:from-zinc-900 dark:to-black">
+        {/* Left Content */}
+        <div className="text-center md:text-left md:w-1/2">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-6xl font-extrabold"
+          >
+            Send & Receive{" "}
+            <span className="text-purple-600 dark:text-purple-400">
+              Anonymous
+            </span>{" "}
+            Messages
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mt-6 text-lg md:text-xl text-gray-600 dark:text-zinc-300"
+          >
+            Honest feedback, secret wishes, or fun surprises — all safe,
+            private, and anonymous.
+          </motion.p>
 
-    <div className="flex gap-4 mt-10 justify-center md:justify-start">
-      <Link href="/login">
-        <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white cursor-pointer">
-          Create Your Profile
-        </Button>
-      </Link>
-      <a href="#how-it-works">
-        <Button size="lg" variant="outline" className="border-gray-300 dark:border-zinc-700 cursor-pointer">
-          Learn More
-        </Button>
-      </a>
-    </div>
-  </div>
+          <div className="flex gap-4 mt-10 justify-center md:justify-start">
+            <Link href="/login">
+              <Button
+                size="lg"
+                className="bg-purple-600 hover:bg-purple-700 text-white cursor-pointer"
+              >
+                Create Your Profile
+              </Button>
+            </Link>
+            <a href="#how-it-works">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-gray-300 dark:border-zinc-700 cursor-pointer"
+              >
+                Learn More
+              </Button>
+            </a>
+          </div>
+        </div>
 
-  {/* Right Illustration */}
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8 }}
-    className="mt-12 md:mt-0 md:w-1/2 flex justify-center"
-  >
-    <img
-      src="/hero-image.png"
-      alt="SecretNote Illustration"
-      className="w-full max-w-md rounded-2xl"
-    />
-  </motion.div>
-</section>
-
+        {/* Right Illustration */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="mt-12 md:mt-0 md:w-1/2 flex justify-center relative w-full max-w-md h-96"
+        >
+          <Image
+            src="/hero-image.png"
+            alt="SecretNote Illustration"
+            fill
+            className="rounded-2xl object-contain"
+          />
+        </motion.div>
+      </section>
 
       {/* How it works */}
       <section
@@ -134,20 +146,6 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-8 bg-gray-50 text-center text-sm text-gray-600 border-t border-gray-200 dark:bg-black dark:text-zinc-500 dark:border-zinc-800">
         <p>© {new Date().getFullYear()} SecretNote. All rights reserved.</p>
-        {/* <div className="mt-3 flex justify-center gap-6">
-          <Link href="/about" className="hover:text-purple-600 dark:hover:text-purple-400">
-            About
-          </Link>
-          <Link href="/privacy" className="hover:text-purple-600 dark:hover:text-purple-400">
-            Privacy
-          </Link>
-          <Link href="/terms" className="hover:text-purple-600 dark:hover:text-purple-400">
-            Terms
-          </Link>
-          <Link href="/contact" className="hover:text-purple-600 dark:hover:text-purple-400">
-            Contact
-          </Link>
-        </div> */}
       </footer>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,16 +24,22 @@ const Login = async () => {
       <Card className="w-full max-w-sm text-center">
         {/* Branding */}
         <CardHeader className="flex flex-col items-center space-y-2">
-          <img
-            src="/secretnote-dark.png" 
-            alt="SecretNote Logo"
-            className="w-12 h-12 hidden dark:block"
-          />
-          <img
-            src="/secretnote-light.png" 
-            alt="SecretNote Logo"
-            className="w-12 h-12 block dark:hidden"
-          />
+          <div className="relative w-12 h-12 hidden dark:block">
+            <Image
+              src="/secretnote-dark.png"
+              alt="SecretNote Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div className="relative w-12 h-12 block dark:hidden">
+            <Image
+              src="/secretnote-light.png"
+              alt="SecretNote Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
           <CardTitle className="text-2xl font-bold">Welcome to SecretNote</CardTitle>
           <CardDescription className="text-sm -mt-1.5 text-muted-foreground">
             Choose a provider to continue
@@ -48,11 +55,7 @@ const Login = async () => {
               await signIn("google");
             }}
           >
-            <Button
-              type="submit"
-              variant="outline"
-              className="w-full cursor-pointer"
-            >
+            <Button type="submit" variant="outline" className="w-full cursor-pointer">
               <svg role="img" viewBox="0 0 24 24" className="w-4 h-4 mr-2">
                 <path
                   fill="currentColor"
@@ -70,11 +73,7 @@ const Login = async () => {
               await signIn("github");
             }}
           >
-            <Button
-              type="submit"
-              variant="outline"
-              className="w-full cursor-pointer"
-            >
+            <Button type="submit" variant="outline" className="w-full cursor-pointer">
               <svg viewBox="0 0 438.549 438.549" className="w-4 h-4 mr-2">
                 <path
                   fill="currentColor"

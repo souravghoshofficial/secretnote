@@ -6,6 +6,16 @@ import { decryptMessage } from "@/lib/crypto";
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
+
+type MessageRow = {
+  id: string;
+  encrypted_text: string;
+  iv: string;
+  auth_tag: string;
+  created_at: string;
+};
+
+
 type Message = {
   id: string;
   content: string;
@@ -18,16 +28,18 @@ const Dashboard = async () => {
 
   const [userRow] = await sql`
     SELECT accepting_messages FROM users WHERE id = ${session.user.id}
-  `;
+  ` as { accepting_messages: boolean }[];
 
-  const rows: any[] = await sql`
+
+  const rawRows = await sql`
     SELECT id, encrypted_text, iv, auth_tag, created_at
     FROM messages
     WHERE user_id = ${session.user.id}
     ORDER BY created_at DESC
-  `;
+  ` as MessageRow[];
 
-  const messages: Message[] = rows.map((m) => ({
+
+  const messages: Message[] = rawRows.map((m) => ({
     id: m.id,
     content: decryptMessage(m.encrypted_text, m.iv, m.auth_tag),
     created_at: m.created_at,
