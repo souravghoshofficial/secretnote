@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { sql } from "@/lib/db";
 import DashboardClient from "./DashboardClient";
+import { decryptMessage } from "@/lib/crypto";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -19,12 +20,18 @@ const Dashboard = async () => {
     SELECT accepting_messages FROM users WHERE id = ${session.user.id}
   `;
 
-  const messages = (await sql`
-    SELECT id, content, created_at
+  const rows: any[] = await sql`
+    SELECT id, encrypted_text, iv, auth_tag, created_at
     FROM messages
     WHERE user_id = ${session.user.id}
     ORDER BY created_at DESC
-  `) as Message[];
+  `;
+
+  const messages: Message[] = rows.map((m) => ({
+    id: m.id,
+    content: decryptMessage(m.encrypted_text, m.iv, m.auth_tag),
+    created_at: m.created_at,
+  }));
 
   const user = {
     id: session.user.id ?? "",
