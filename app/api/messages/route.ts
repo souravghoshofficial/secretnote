@@ -3,7 +3,6 @@ import { sql } from "@/lib/db";
 import { auth } from "@/auth";
 import { encryptMessage, decryptMessage } from "@/lib/crypto";
 
-
 type MessageRow = {
   id: string;
   encrypted_text: string;
@@ -12,25 +11,27 @@ type MessageRow = {
   created_at: string;
 };
 
-
 type Message = {
   id: string;
   content: string;
   created_at: string;
 };
 
-
 export async function POST(req: Request) {
   try {
-    const { username, content }: { username?: string; content?: string } = await req.json();
+    const { username, content }: { username?: string; content?: string } =
+      await req.json();
 
     if (!username || !content) {
-      return NextResponse.json({ error: "Username and content required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Username and content required" },
+        { status: 400 }
+      );
     }
 
-    const users = await sql`
-      SELECT id, accepting_messages FROM users WHERE username = ${username}
-    `;
+    const users = (await sql`
+  SELECT id, accepting_messages FROM users WHERE username = ${username}
+`) as { id: string; accepting_messages: boolean }[];
 
     if (users.length === 0) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -39,7 +40,10 @@ export async function POST(req: Request) {
     const user = users[0];
 
     if (!user.accepting_messages) {
-      return NextResponse.json({ error: "This user is not accepting messages." }, { status: 403 });
+      return NextResponse.json(
+        { error: "This user is not accepting messages." },
+        { status: 403 }
+      );
     }
 
     const { ciphertext, iv, authTag } = encryptMessage(content);
@@ -52,10 +56,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Error in /api/messages POST:", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
-
 
 export async function GET() {
   try {
@@ -65,19 +71,12 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const rawRows = await sql`
+    const rows = (await sql`
       SELECT id, encrypted_text, iv, auth_tag, created_at
       FROM messages
       WHERE user_id = ${session.user.id}
       ORDER BY created_at DESC
-    `;
-    const rows: MessageRow[] = rawRows.map((row: Record<string, any>) => ({
-      id: row.id,
-      encrypted_text: row.encrypted_text,
-      iv: row.iv,
-      auth_tag: row.auth_tag,
-      created_at: row.created_at,
-    }));
+    `) as MessageRow[];
 
     // Decrypt messages
     const messages: Message[] = rows.map((m) => ({
@@ -89,6 +88,9 @@ export async function GET() {
     return NextResponse.json(messages);
   } catch (err) {
     console.error("Error in /api/messages GET:", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
