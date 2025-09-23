@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import {
   UserPlus,
   Link2,
@@ -17,9 +17,10 @@ export default function LandingPage() {
   return (
     <div className="w-full h-screen flex flex-col bg-white text-black dark:bg-black dark:text-white overflow-y-scroll hide-scrollbar ">
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-24 md:py-36 bg-gradient-to-b from-gray-50 to-white dark:from-zinc-900 dark:to-black">
-        {/* Left Content */}
-        <div className="text-center md:text-left md:w-1/2">
+      <section className="relative min-h-screen flex items-center justify-center px-6 md:px-20 py-24 md:py-36">
+        <BackgroundRippleEffect />
+
+        <div className="relative z-10 text-center max-w-3xl">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -32,6 +33,7 @@ export default function LandingPage() {
             </span>{" "}
             Messages
           </motion.h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -42,7 +44,7 @@ export default function LandingPage() {
             private, and anonymous.
           </motion.p>
 
-          <div className="flex gap-4 mt-10 justify-center md:justify-start">
+          <div className="flex gap-4 mt-10 justify-center">
             <Link href="/login">
               <Button
                 size="lg"
@@ -62,21 +64,6 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
-
-        {/* Right Illustration */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          className="mt-12 md:mt-0 md:w-1/2 flex justify-center relative w-full max-w-md h-96"
-        >
-          <Image
-            src="/hero-image.png"
-            alt="SecretNote Illustration"
-            fill
-            className="rounded-2xl object-contain"
-          />
-        </motion.div>
       </section>
 
       {/* How it works */}
@@ -89,17 +76,23 @@ export default function LandingPage() {
         </h2>
         <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
           <Step
-            icon={<UserPlus className="w-10 h-10 text-purple-600 dark:text-purple-400" />}
+            icon={
+              <UserPlus className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+            }
             title="Create Profile"
             text="Sign up in seconds and get your unique SecretNote link."
           />
           <Step
-            icon={<Link2 className="w-10 h-10 text-purple-600 dark:text-purple-400" />}
+            icon={
+              <Link2 className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+            }
             title="Share Link"
             text="Post your link anywhere — WhatsApp, Instagram, or Twitter."
           />
           <Step
-            icon={<MessageCircle className="w-10 h-10 text-purple-600 dark:text-purple-400" />}
+            icon={
+              <MessageCircle className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+            }
             title="Receive Messages"
             text="Get anonymous messages instantly, safe and secure."
           />
@@ -108,20 +101,28 @@ export default function LandingPage() {
 
       {/* Features */}
       <section className="py-20 px-6 md:px-12 bg-white text-center dark:bg-black">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12">Why Use SecretNote?</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-12">
+          Why Use SecretNote?
+        </h2>
         <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
           <Feature
-            icon={<Lock className="w-8 h-8 text-purple-600 dark:text-purple-400" />}
+            icon={
+              <Lock className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            }
             title="100% Anonymous"
             text="Your identity stays hidden. Always."
           />
           <Feature
-            icon={<Smartphone className="w-8 h-8 text-purple-600 dark:text-purple-400" />}
+            icon={
+              <Smartphone className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            }
             title="Mobile Friendly"
             text="Works perfectly on all devices."
           />
           <Feature
-            icon={<Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />}
+            icon={
+              <Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            }
             title="Fast & Secure"
             text="Messages delivered instantly with encryption."
           />
@@ -143,9 +144,19 @@ export default function LandingPage() {
         </Link>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 bg-gray-50 text-center text-sm text-gray-600 border-t border-gray-200 dark:bg-black dark:text-zinc-500 dark:border-zinc-800">
+      <footer className="py-8 bg-gray-50 text-center text-sm text-gray-600 border-t border-gray-200 dark:bg-black dark:text-zinc-400 dark:border-zinc-800 transition-colors">
         <p>© {new Date().getFullYear()} SecretNote. All rights reserved.</p>
+        <p className="mt-2">
+          Built with ❤️ by{" "}
+          <a
+            href="https://souravghosh.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline text-blue-500"
+          >
+            Sourav Ghosh
+          </a>
+        </p>
       </footer>
     </div>
   );

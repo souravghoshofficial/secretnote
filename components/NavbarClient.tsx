@@ -33,9 +33,9 @@ const NavbarClient = ({ session }: { session: Session | null }) => {
             Logout
           </Button>
         ) : (
-          <Button className="cursor-pointer">
-            <Link href='/login'>Login</Link>
-          </Button>
+            <Link href='/login'>
+              <Button className="cursor-pointer">Login</Button>
+            </Link>
         )}
       </div>
     </nav>
