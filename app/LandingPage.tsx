@@ -21,30 +21,55 @@ export default function LandingPage() {
         <BackgroundRippleEffect />
 
         <div className="relative z-10 text-center max-w-3xl">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-extrabold"
-          >
-            Send & Receive{" "}
-            <span className="text-purple-600 dark:text-purple-400">
-              Anonymous
-            </span>{" "}
-            Messages
-          </motion.h1>
+          {/* Animated Title */}
+          <h1 className="text-4xl md:text-6xl font-extrabold">
+            {"Send & Receive Anonymous Messages"
+              .split(" ")
+              .map((word, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.12,
+                    ease: "easeInOut",
+                  }}
+                  className={`mr-2 inline-block ${
+                    word === "Anonymous"
+                      ? "text-purple-600 dark:text-purple-400"
+                      : ""
+                  }`}
+                >
+                  {word}
+                </motion.span>
+              ))}
+          </h1>
 
+          {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: 1.2,
+            }}
             className="mt-6 text-lg md:text-xl text-gray-600 dark:text-zinc-300"
           >
             Honest feedback, secret wishes, or fun surprises — all safe,
             private, and anonymous.
           </motion.p>
 
-          <div className="flex gap-4 mt-10 justify-center">
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: 1.6,
+            }}
+            className="flex gap-4 mt-10 justify-center"
+          >
             <Link href="/login">
               <Button
                 size="lg"
@@ -62,7 +87,7 @@ export default function LandingPage() {
                 Learn More
               </Button>
             </a>
-          </div>
+          </motion.div>
         </div>
       </section>
 
